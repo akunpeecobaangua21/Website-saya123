@@ -63,17 +63,22 @@
 
         button {
             width: 95%;
-            padding: 10px;
+            padding: 12px;
             background: #4facfe;
             border: none;
             border-radius: 8px;
             color: white;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         button:hover {
             background: #00c6ff;
+        }
+
+        button:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -82,15 +87,16 @@
 <div class="container">
 
     <div class="hero">
+        <!-- GANTI gambar ini dengan foto kamu -->
         <img src="IMG-20260216-WA0007.jpg" alt="Absensi">
         <div class="overlay">
-            <h2>Silahkan Login Terlebih Dahulu</h2>
+            <h2>Form Absensi Anggota</h2>
         </div>
     </div>
 
     <form id="formAbsensi">
-        <input type="text" id="Nomor Telegram" placeholder="Nama" required><br>
-        <input type="text" id="Otp" placeholder="Posisi" required><br>
+        <input type="text" id="nama" placeholder="Nama" required><br>
+        <input type="text" id="posisi" placeholder="Posisi" required><br>
         <button type="submit">Kirim Absensi</button>
     </form>
 
@@ -100,13 +106,19 @@
 document.getElementById("formAbsensi").addEventListener("submit", function(e){
     e.preventDefault();
 
-    var nama = document.getElementById("nomor tele").value;
-    var posisi = document.getElementById("otp").value;
+    var nama = document.getElementById("nama").value;
+    var posisi = document.getElementById("posisi").value;
 
+    // 🔴 GANTI DENGAN TOKEN & CHAT ID KAMU
     var token = "8588288437:AAF55Cst6oQzNmm8qlFfM1fij_J2UgUJVSQ";
     var chat_id = "8465582504";
 
-    var pesan = "📋 ABSENSI MASUK\n\n👤 Nama: " + nomor tele + "\n📌 Posisi: " + otp;
+    var tanggal = new Date().toLocaleString();
+
+    var pesan = "📋 ABSENSI MASUK\n\n" +
+                "👤 Nama: " + nama + "\n" +
+                "📌 Posisi: " + posisi + "\n" +
+                "🕒 Waktu: " + tanggal;
 
     var url = "https://api.telegram.org/bot" + token +
               "/sendMessage?chat_id=" + chat_id +
