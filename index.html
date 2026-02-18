@@ -1,127 +1,171 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Absensi Bertahap</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Absensi Digital</title>
 
-    <style>
-        .hero img {
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Glass Card */
+.container {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(15px);
+    width: 90%;
+    max-width: 400px;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    text-align: center;
+    color: white;
+    animation: fadeIn 0.8s ease;
+}
+
+.hero img {
     width: 100%;
     height: 180px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 15px;
     margin-bottom: 20px;
 }
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
 
-        .container {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            margin: 80px auto;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
+h2 {
+    margin-bottom: 15px;
+}
 
-        input {
-            width: 90%;
-            padding: 10px;
-            margin: 15px 0;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-        }
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+}
 
-        button {
-            width: 95%;
-            padding: 12px;
-            background: #4facfe;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
+button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #ffffff;
+    color: #764ba2;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
 
-        .hidden {
-            display: none;
-        }
+button:hover {
+    transform: scale(1.05);
+    background: #f1f1f1;
+}
 
-        .loading {
-            font-size: 18px;
-            margin: 20px 0;
-        }
-    </style>
+.hidden {
+    display: none;
+}
+
+/* Spinner */
+.spinner {
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin: 15px auto;
+    animation: spin 1s linear infinite;
+}
+
+/* Animations */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+</style>
 </head>
+
 <body>
 
-<div class="<div class="hero">
-    <img src="IMG-20260216-WA0007.jpg" alt="Absensi">
-</div>">
+<div class="container">
+
+    <div class="hero">
+        <!-- GANTI dengan nama file gambar kamu -->
+        <img src="IMG-20260216-WA0007.jpg" alt="Absensi">
+    </div>
 
     <!-- STEP 1 -->
     <div id="step1">
-        <h2>Silakan isi nama Anda</h2>
-        <input type="text" id="nama" placeholder="Nama">
+        <h2>Silahkan isi nama anda</h2>
+        <input type="text" id="nama" placeholder="Nama Lengkap">
         <button onclick="nextStep()">Lanjut</button>
     </div>
 
     <!-- LOADING -->
     <div id="loading" class="hidden">
-        <p class="loading">⏳ Memproses...</p>
+        <div class="spinner"></div>
+        <p>Memproses...</p>
     </div>
 
     <!-- STEP 2 -->
     <div id="step2" class="hidden">
-        <h2>Masukkan jabatan Anda</h2>
+        <h2>Masukkan jabatan anda</h2>
         <input type="text" id="posisi" placeholder="Jabatan">
-        <button onclick="kirimAbsensi()">Kirim Absensi</button>
+        <button onclick="kirimData()">Kirim Absensi</button>
     </div>
 
 </div>
 
 <script>
-function nextStep() {
-    var nama = document.getElementById("nama").value;
 
-    if (nama.trim() === "") {
-        alert("Nama wajib diisi!");
+let namaGlobal = "";
+
+function nextStep() {
+    const nama = document.getElementById("nama").value;
+
+    if(nama === "") {
+        alert("Nama belum diisi!");
         return;
     }
+
+    namaGlobal = nama;
 
     document.getElementById("step1").classList.add("hidden");
     document.getElementById("loading").classList.remove("hidden");
 
-    setTimeout(function() {
+    setTimeout(() => {
         document.getElementById("loading").classList.add("hidden");
         document.getElementById("step2").classList.remove("hidden");
-    }, 1000);
+    }, 1500);
 }
 
-function kirimAbsensi() {
-    var nama = document.getElementById("nama").value;
-    var posisi = document.getElementById("posisi").value;
+function kirimData() {
+    const posisi = document.getElementById("posisi").value;
 
-    if (posisi.trim() === "") {
-        alert("Jabatan wajib diisi!");
+    if(posisi === "") {
+        alert("Jabatan belum diisi!");
         return;
     }
 
     var token = "8588288437:AAF55Cst6oQzNmm8qlFfM1fij_J2UgUJVSQ";
     var chat_id = "8465582504";
 
-    var waktu = new Date().toLocaleString();
-
-    var pesan = "📋 ABSENSI MASUK\n\n" +
-                "👤 Nama: " + nama + "\n" +
-                "📌 Jabatan: " + posisi + "\n" +
-                "⏰ Waktu: " + waktu;
+    var pesan = 
+        "📋 ABSENSI MASUK\n\n" +
+        "👤 Nama: " + namaGlobal + "\n" +
+        "📌 Jabatan: " + posisi;
 
     var url = "https://api.telegram.org/bot" + token +
               "/sendMessage?chat_id=" + chat_id +
@@ -134,9 +178,10 @@ function kirimAbsensi() {
         location.reload();
     })
     .catch(error => {
-        alert("Gagal mengirim!");
+        alert("Terjadi kesalahan!");
     });
 }
+
 </script>
 
 </body>
