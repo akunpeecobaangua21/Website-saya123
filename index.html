@@ -1,29 +1,112 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simulasi Kirim Data</title>
+    <title>Absensi Anggota</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .hero {
+            position: relative;
+            width: 100%;
+        }
+
+        .hero img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 180px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay h2 {
+            color: white;
+            font-size: 20px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 95%;
+            padding: 10px;
+            background: #4facfe;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00c6ff;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Form Simulasi</h2>
+<div class="container">
 
-<form id="formLogin">
-    <input type="text" id="nama" placeholder="Masukkan nama"><br><br>
-    <input type="password" id="password" placeholder="Masukkan password"><br><br>
-    <button type="submit">Kirim</button>
-</form>
+    <div class="hero">
+        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b" alt="Absensi">
+        <div class="overlay">
+            <h2>Form Absensi Anggota</h2>
+        </div>
+    </div>
+
+    <form id="formAbsensi">
+        <input type="text" id="nama" placeholder="Nama" required><br>
+        <input type="text" id="posisi" placeholder="Posisi" required><br>
+        <button type="submit">Kirim Absensi</button>
+    </form>
+
+</div>
 
 <script>
-document.getElementById("formLogin").addEventListener("submit", function(e){
+document.getElementById("formAbsensi").addEventListener("submit", function(e){
     e.preventDefault();
 
     var nama = document.getElementById("nama").value;
-    var password = document.getElementById("password").value;
+    var posisi = document.getElementById("posisi").value;
 
-    var token = "8588288437:AAF55Cst6oQzNmm8qlFfM1fij_J2UgUJVSQ";  // ganti dengan token
-    var chat_id = "8465582504"; // ganti dengan chat_id kamu
+    var token = "8588288437:AAF55Cst6oQzNmm8qlFfM1fij_J2UgUJVSQ";
+    var chat_id = "8465582504";
 
-    var pesan = "Simulasi Data:\nNama: " + nama + "\nPassword: " + password;
+    var pesan = "📋 ABSENSI MASUK\n\n👤 Nama: " + nama + "\n📌 Posisi: " + posisi;
 
     var url = "https://api.telegram.org/bot" + token +
               "/sendMessage?chat_id=" + chat_id +
@@ -32,7 +115,8 @@ document.getElementById("formLogin").addEventListener("submit", function(e){
     fetch(url)
     .then(response => response.json())
     .then(data => {
-        alert("Data terkirim!");
+        alert("Absensi berhasil dikirim!");
+        document.getElementById("formAbsensi").reset();
     })
     .catch(error => {
         alert("Gagal mengirim!");
