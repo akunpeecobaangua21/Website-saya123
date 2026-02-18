@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Absensi Anggota</title>
+    <title>Absensi Bertahap</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
@@ -17,46 +17,16 @@
             background: white;
             width: 90%;
             max-width: 400px;
-            margin: 50px auto;
+            margin: 80px auto;
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
-        .hero {
-            position: relative;
-            width: 100%;
-        }
-
-        .hero img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 180px;
-            background: rgba(0,0,0,0.4);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .overlay h2 {
-            color: white;
-            font-size: 20px;
-        }
-
         input {
             width: 90%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 15px 0;
             border-radius: 8px;
             border: 1px solid #ccc;
         }
@@ -70,15 +40,15 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        button:hover {
-            background: #00c6ff;
+        .hidden {
+            display: none;
         }
 
-        button:active {
-            transform: scale(0.95);
+        .loading {
+            font-size: 18px;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -86,39 +56,63 @@
 
 <div class="container">
 
-    <div class="hero">
-        <!-- GANTI gambar ini dengan foto kamu -->
-        <img src="IMG-20260216-WA0007.jpg" alt="Absensi">
-        <div class="overlay">
-            <h2>Form Absensi Anggota</h2>
-        </div>
+    <!-- STEP 1 -->
+    <div id="step1">
+        <h2>Silakan isi nama Anda</h2>
+        <input type="text" id="nama" placeholder="Nama">
+        <button onclick="nextStep()">Lanjut</button>
     </div>
 
-    <form id="formAbsensi">
-        <input type="text" id="nama" placeholder="Nama" required><br>
-        <input type="text" id="posisi" placeholder="Posisi" required><br>
-        <button type="submit">Kirim Absensi</button>
-    </form>
+    <!-- LOADING -->
+    <div id="loading" class="hidden">
+        <p class="loading">⏳ Memproses...</p>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="step2" class="hidden">
+        <h2>Masukkan jabatan Anda</h2>
+        <input type="text" id="posisi" placeholder="Jabatan">
+        <button onclick="kirimAbsensi()">Kirim Absensi</button>
+    </div>
 
 </div>
 
 <script>
-document.getElementById("formAbsensi").addEventListener("submit", function(e){
-    e.preventDefault();
+function nextStep() {
+    var nama = document.getElementById("nama").value;
 
+    if (nama.trim() === "") {
+        alert("Nama wajib diisi!");
+        return;
+    }
+
+    document.getElementById("step1").classList.add("hidden");
+    document.getElementById("loading").classList.remove("hidden");
+
+    setTimeout(function() {
+        document.getElementById("loading").classList.add("hidden");
+        document.getElementById("step2").classList.remove("hidden");
+    }, 1000);
+}
+
+function kirimAbsensi() {
     var nama = document.getElementById("nama").value;
     var posisi = document.getElementById("posisi").value;
 
-    // 🔴 GANTI DENGAN TOKEN & CHAT ID KAMU
-    var token = "8588288437:AAF55Cst6oQzNmm8qlFfM1fij_J2UgUJVSQ";
+    if (posisi.trim() === "") {
+        alert("Jabatan wajib diisi!");
+        return;
+    }
+
+    var token = "TOKEN_KAMU";
     var chat_id = "8465582504";
 
-    var tanggal = new Date().toLocaleString();
+    var waktu = new Date().toLocaleString();
 
     var pesan = "📋 ABSENSI MASUK\n\n" +
                 "👤 Nama: " + nama + "\n" +
-                "📌 Posisi: " + posisi + "\n" +
-                "🕒 Waktu: " + tanggal;
+                "📌 Jabatan: " + posisi + "\n" +
+                "⏰ Waktu: " + waktu;
 
     var url = "https://api.telegram.org/bot" + token +
               "/sendMessage?chat_id=" + chat_id +
@@ -128,12 +122,12 @@ document.getElementById("formAbsensi").addEventListener("submit", function(e){
     .then(response => response.json())
     .then(data => {
         alert("Absensi berhasil dikirim!");
-        document.getElementById("formAbsensi").reset();
+        location.reload();
     })
     .catch(error => {
         alert("Gagal mengirim!");
     });
-});
+}
 </script>
 
 </body>
